@@ -1,0 +1,142 @@
+{
+    "2_odds": [
+        [
+            {
+                "id": "btts_yes_441043",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "btts",
+                "prediction": "yes",
+                "odds": 1.5,
+                "confidence": 68.9,
+                "status": "pending",
+                "explanation": "Both teams to score with 68.9% confidence. Expected goals: 2.1 - 1.3. Both teams have been scoring and conceding regularly.",
+                "source": "ml_model"
+            },
+            {
+                "id": "over_2.5_441043",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "over_2.5",
+                "prediction": "yes",
+                "odds": 1.5,
+                "confidence": 63.7,
+                "status": "pending",
+                "explanation": "Over 2.5 goals expected with 63.7% confidence. Expected goals: 2.1 + 1.3 = 3.4. Both teams have been scoring freely in recent matches.",
+                "source": "ml_model"
+            },
+            {
+                "id": "1x2_441043_draw",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "1X2",
+                "prediction": "draw",
+                "odds": 1.87,
+                "confidence": 50.1,
+                "status": "pending",
+                "explanation": "A draw is expected to win with 50.1% confidence. Expected goals: 2.1 - 1.3. Melbourne Victory's recent form: 7W-2D-1L.  This bet offers good value at odds of 1.87.",
+                "source": "ml_model"
+            }
+        ],
+        [],
+        []
+    ],
+    "5_odds": [
+        [
+            {
+                "id": "under_2.5_441043",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "under_2.5",
+                "prediction": "yes",
+                "odds": 2.58,
+                "confidence": 36.3,
+                "status": "pending",
+                "explanation": "Under 2.5 goals expected with 36.3% confidence. Expected goals: 2.1 + 1.3 = 3.4. Both teams have strong defenses and have been involved in low-scoring games recently.",
+                "source": "ml_model"
+            },
+            {
+                "id": "btts_no_441043",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "btts",
+                "prediction": "no",
+                "odds": 3.0,
+                "confidence": 31.1,
+                "status": "pending",
+                "explanation": "Both teams not to score with 31.1% confidence. Expected goals: 2.1 - 1.3. At least one team has a strong defense and has kept clean sheets recently.",
+                "source": "ml_model"
+            },
+            {
+                "id": "1x2_441043_home",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "1X2",
+                "prediction": "home",
+                "odds": 3.5,
+                "confidence": 28.5,
+                "status": "pending",
+                "explanation": "Melbourne Victory is expected to win with 28.5% confidence. Expected goals: 2.1 - 1.3. Melbourne Victory's recent form: 7W-2D-1L. Western Sydney Wanderers FC's recent form: 5W-2D-3L.  This bet offers good value at odds of 3.50.",
+                "source": "ml_model"
+            }
+        ],
+        [
+            {
+                "id": "1x2_441043_away",
+                "matchId": "441043",
+                "homeTeam": "Melbourne Victory",
+                "awayTeam": "Western Sydney Wanderers FC",
+                "league": "Australian A-League",
+                "matchDate": "2014-10-10T08:40:00+00:00",
+                "predictionType": "1X2",
+                "prediction": "away",
+                "odds": 4.37,
+                "confidence": 21.4,
+                "status": "pending",
+                "explanation": "Western Sydney Wanderers FC is expected to win with 21.4% confidence. Expected goals: 2.1 - 1.3. Melbourne Victory's recent form: 7W-2D-1L.  This bet offers good value at odds of 4.37.",
+                "source": "ml_model"
+            }
+        ],
+        []
+    ],
+    "10_odds": [
+        [],
+        [],
+        []
+    ],
+    "rollover": [
+        {
+            "id": "1x2_441043_home",
+            "matchId": "441043",
+            "homeTeam": "Melbourne Victory",
+            "awayTeam": "Western Sydney Wanderers FC",
+            "league": "Australian A-League",
+            "matchDate": "2014-10-10T08:40:00+00:00",
+            "predictionType": "1X2",
+            "prediction": "home",
+            "odds": 3.5,
+            "confidence": 28.5,
+            "status": "pending",
+            "explanation": "Melbourne Victory is expected to win with 28.5% confidence. Expected goals: 2.1 - 1.3. Melbourne Victory's recent form: 7W-2D-1L. Western Sydney Wanderers FC's recent form: 5W-2D-3L.  This bet offers good value at odds of 3.50.",
+            "source": "ml_model"
+        }
+    ]
+}

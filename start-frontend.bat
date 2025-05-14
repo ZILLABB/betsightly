@@ -1,0 +1,3 @@
+@echo off
+echo Starting BetSightly frontend on port 5180...
+npm run dev -- --port 5180

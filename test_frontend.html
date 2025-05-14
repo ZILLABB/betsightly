@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetSightly Predictions Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .prediction-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .prediction-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 300px;
+        }
+        .match-info {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .match-teams {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .match-details {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .prediction-details {
+            margin-top: 10px;
+        }
+        .prediction-item {
+            margin-bottom: 8px;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .prediction-type {
+            font-weight: bold;
+            color: #333;
+        }
+        .prediction-value {
+            color: #0066cc;
+        }
+        .prediction-odds {
+            color: #cc6600;
+            font-weight: bold;
+        }
+        .prediction-confidence {
+            color: #009900;
+        }
+        .prediction-explanation {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        .category-section {
+            margin-bottom: 30px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        .error {
+            color: #cc0000;
+            padding: 10px;
+            background-color: #ffeeee;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #0055aa;
+        }
+    </style>
+</head>
+<body>
+    <h1>BetSightly Predictions Test</h1>
+    
+    <div>
+        <button id="loadPredictions" class="button">Load Predictions</button>
+        <button id="refreshPredictions" class="button">Refresh Predictions</button>
+    </div>
+    
+    <div id="errorContainer" class="error" style="display: none;"></div>
+    
+    <div id="loadingContainer" class="loading" style="display: none;">Loading predictions...</div>
+    
+    <div id="predictionsContainer">
+        <div class="category-section">
+            <h2>2 Odds Predictions</h2>
+            <div id="twoOddsContainer" class="prediction-container"></div>
+        </div>
+        
+        <div class="category-section">
+            <h2>5 Odds Predictions</h2>
+            <div id="fiveOddsContainer" class="prediction-container"></div>
+        </div>
+        
+        <div class="category-section">
+            <h2>10 Odds Predictions</h2>
+            <div id="tenOddsContainer" class="prediction-container"></div>
+        </div>
+    </div>
+    
+    <script>
+        // API base URL
+        const API_BASE_URL = "http://localhost:8000/api";
+        
+        // DOM elements
+        const loadButton = document.getElementById('loadPredictions');
+        const refreshButton = document.getElementById('refreshPredictions');
+        const errorContainer = document.getElementById('errorContainer');
+        const loadingContainer = document.getElementById('loadingContainer');
+        const twoOddsContainer = document.getElementById('twoOddsContainer');
+        const fiveOddsContainer = document.getElementById('fiveOddsContainer');
+        const tenOddsContainer = document.getElementById('tenOddsContainer');
+        
+        // Event listeners
+        loadButton.addEventListener('click', loadPredictions);
+        refreshButton.addEventListener('click', refreshPredictions);
+        
+        // Load predictions from API
+        async function loadPredictions() {
+            showLoading();
+            hideError();
+            
+            try {
+                // Try to load from football.json API
+                const response = await fetch(`${API_BASE_URL}/football-json/predictions/daily`);
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayPredictions(data);
+            } catch (error) {
+                console.error('Error loading predictions:', error);
+                
+                try {
+                    // Fall back to loading from JSON file
+                    const response = await fetch('backend/data/predictions/predictions_2025-05-12.json');
+                    
+                    if (!response.ok) {
+                        throw new Error(`File error: ${response.status}`);
+                    }
+                    
+                    const predictions = await response.json();
+                    
+                    // Convert to the expected format
+                    const categorizedPredictions = categorizePredictions(predictions);
+                    displayPredictions(categorizedPredictions);
+                } catch (fallbackError) {
+                    console.error('Error loading from file:', fallbackError);
+                    showError('Failed to load predictions. Please try again later.');
+                }
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Refresh predictions
+        async function refreshPredictions() {
+            showLoading();
+            hideError();
+            
+            try {
+                // Try to refresh from football.json API
+                const response = await fetch(`${API_BASE_URL}/football-json/predictions/refresh`);
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                // Load the refreshed predictions
+                await loadPredictions();
+            } catch (error) {
+                console.error('Error refreshing predictions:', error);
+                showError('Failed to refresh predictions. Please try again later.');
+                hideLoading();
+            }
+        }
+        
+        // Categorize predictions by odds
+        function categorizePredictions(predictions) {
+            const categorized = {
+                '2_odds': [],
+                '5_odds': [],
+                '10_odds': []
+            };
+            
+            for (const prediction of predictions) {
+                for (const pred of prediction.predictions) {
+                    const odds = pred.odds;
+                    const category = odds <= 2.5 ? '2_odds' : odds <= 5.0 ? '5_odds' : '10_odds';
+                    
+                    categorized[category].push({
+                        ...pred,
+                        match: prediction.match
+                    });
+                }
+            }
+            
+            return categorized;
+        }
+        
+        // Display predictions
+        function displayPredictions(data) {
+            // Clear containers
+            twoOddsContainer.innerHTML = '';
+            fiveOddsContainer.innerHTML = '';
+            tenOddsContainer.innerHTML = '';
+            
+            // Display 2 odds predictions
+            displayCategoryPredictions(data['2_odds'] || [], twoOddsContainer);
+            
+            // Display 5 odds predictions
+            displayCategoryPredictions(data['5_odds'] || [], fiveOddsContainer);
+            
+            // Display 10 odds predictions
+            displayCategoryPredictions(data['10_odds'] || [], tenOddsContainer);
+        }
+        
+        // Display predictions for a category
+        function displayCategoryPredictions(predictions, container) {
+            if (predictions.length === 0) {
+                container.innerHTML = '<p>No predictions available for this category.</p>';
+                return;
+            }
+            
+            for (const prediction of predictions) {
+                const match = prediction.match;
+                
+                // Create prediction card
+                const card = document.createElement('div');
+                card.className = 'prediction-card';
+                
+                // Match info
+                const matchInfo = document.createElement('div');
+                matchInfo.className = 'match-info';
+                
+                const matchTeams = document.createElement('div');
+                matchTeams.className = 'match-teams';
+                matchTeams.textContent = `${match.homeTeam.name} vs ${match.awayTeam.name}`;
+                
+                const matchDetails = document.createElement('div');
+                matchDetails.className = 'match-details';
+                
+                // Format date
+                const matchDate = new Date(match.utcDate);
+                const formattedDate = matchDate.toLocaleString();
+                
+                matchDetails.textContent = `${match.competition.name} | ${formattedDate}`;
+                
+                matchInfo.appendChild(matchTeams);
+                matchInfo.appendChild(matchDetails);
+                
+                // Prediction details
+                const predictionDetails = document.createElement('div');
+                predictionDetails.className = 'prediction-details';
+                
+                const predictionItem = document.createElement('div');
+                predictionItem.className = 'prediction-item';
+                
+                const predictionType = document.createElement('div');
+                predictionType.className = 'prediction-type';
+                predictionType.textContent = `${prediction.predictionType}: `;
+                
+                const predictionValue = document.createElement('span');
+                predictionValue.className = 'prediction-value';
+                predictionValue.textContent = prediction.prediction;
+                
+                predictionType.appendChild(predictionValue);
+                
+                const predictionOdds = document.createElement('div');
+                predictionOdds.className = 'prediction-odds';
+                predictionOdds.textContent = `Odds: ${prediction.odds.toFixed(2)}`;
+                
+                const predictionConfidence = document.createElement('div');
+                predictionConfidence.className = 'prediction-confidence';
+                predictionConfidence.textContent = `Confidence: ${prediction.confidence.toFixed(1)}%`;
+                
+                const predictionExplanation = document.createElement('div');
+                predictionExplanation.className = 'prediction-explanation';
+                predictionExplanation.textContent = prediction.explanation;
+                
+                predictionItem.appendChild(predictionType);
+                predictionItem.appendChild(predictionOdds);
+                predictionItem.appendChild(predictionConfidence);
+                predictionItem.appendChild(predictionExplanation);
+                
+                predictionDetails.appendChild(predictionItem);
+                
+                // Add to card
+                card.appendChild(matchInfo);
+                card.appendChild(predictionDetails);
+                
+                // Add to container
+                container.appendChild(card);
+            }
+        }
+        
+        // Show loading indicator
+        function showLoading() {
+            loadingContainer.style.display = 'block';
+        }
+        
+        // Hide loading indicator
+        function hideLoading() {
+            loadingContainer.style.display = 'none';
+        }
+        
+        // Show error message
+        function showError(message) {
+            errorContainer.textContent = message;
+            errorContainer.style.display = 'block';
+        }
+        
+        // Hide error message
+        function hideError() {
+            errorContainer.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
