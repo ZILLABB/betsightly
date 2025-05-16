@@ -11,10 +11,40 @@ BetSightly is a comprehensive sports prediction platform that provides high-qual
 - **Punter Profiles**: Follow professional punters and their predictions
 - **Game Code Management**: Easily copy and manage game codes
 - **Performance Statistics**: Comprehensive statistics and visualization
-- **Advanced Statistical Models**: Poisson, Dixon-Coles, and ensemble methods
+- **Advanced Statistical Models**: Ensemble methods with multiple algorithms
 - **Social Media Integration**: Automated collection from Twitter and Telegram
 - **Responsive Design**: Mobile-first design with dark/light mode
 - **Admin Interface**: Comprehensive management tools and monitoring
+
+## 🔄 Recent Improvements
+
+The codebase has been improved in the following ways:
+
+1. **Code Organization**
+   - Created a common utilities module (`app/utils/common.py`)
+   - Implemented centralized configuration management (`app/utils/config.py`)
+   - Separated concerns more clearly (data access, business logic, API)
+
+2. **ML Model Improvements**
+   - Created a base model class (`app/ml/base_model.py`)
+   - Refactored ML models to inherit from the base class
+   - Improved feature engineering with caching
+   - Added proper model versioning
+
+3. **API Client Improvements**
+   - Created a base API client class (`app/services/api_client.py`)
+   - Implemented proper rate limiting and error handling
+   - Added response caching
+
+4. **Prediction Service Improvements**
+   - Created an improved prediction service (`app/services/prediction_service_improved.py`)
+   - Added better categorization of predictions
+   - Implemented rollover prediction generation
+
+5. **Script Improvements**
+   - Created improved scripts for training models and generating predictions
+   - Added proper command-line interfaces
+   - Improved error handling and logging
 
 ## 🚀 Tech Stack
 
@@ -33,7 +63,8 @@ BetSightly is a comprehensive sports prediction platform that provides high-qual
 - PostgreSQL for database
 - Redis for caching
 - Pandas/NumPy for data processing
-- SciPy for statistical models
+- Scikit-learn, XGBoost, and LightGBM for ML models
+- Ensemble methods for improved prediction accuracy
 
 ### DevOps
 
@@ -176,6 +207,9 @@ pytest tests/api/
 
 # Run a specific test file
 pytest tests/unit/services/test_base_api_client.py
+
+# Test the improved ML models
+pytest tests/unit/ml/test_ensemble_model_improved.py
 ```
 
 ### Test Structure
